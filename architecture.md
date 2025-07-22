@@ -45,8 +45,8 @@ This document provides a full overview of the architecture, components, and work
 
 ```mermaid
 flowchart TD
-    A[Dummy Data] --> B[Model Training (train.py)]
-    B --> C[Saved Model (joblib)]
+    A[Dummy Data] --> B[Model Training \(train.py\)]
+    B --> C[Saved Model \(joblib\)]
     C --> D[FastAPI Inference API]
     D --> E[User Predict Request]
     D --> F[/metrics Endpoint]
