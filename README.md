@@ -1,1 +1,1 @@
-# Project description and setup instructions
+# FastTrack-MLOps project README
