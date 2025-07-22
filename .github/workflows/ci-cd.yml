@@ -1,1 +1,47 @@
-# GitHub Actions workflow
+name: CI/CD for MLOps API
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install --no-cache-dir -r requirements.txt
+
+    - name: Run train script
+      run: |
+        python src/train.py
+
+    - name: Test prediction script
+      run: |
+        python src/predict.py 10
+
+    - name: Build Docker image
+      run: |
+        docker build -t mlops-api .
+
+    - name: Run container and test API
+      run: |
+        docker run -d -p 8000:8000 --name test-api mlops-api
+        sleep 5
+        curl --fail http://localhost:8000/predict?x=5
+
+    - name: Clean up
+      run: |
+        docker stop test-api
+        docker rm test-api
